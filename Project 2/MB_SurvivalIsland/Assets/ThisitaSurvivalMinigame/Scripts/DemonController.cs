@@ -11,6 +11,9 @@ public class DemonController : MonoBehaviour {
 
     private float chaseStartTime;
 
+    public float timer = 30.0f;
+    private float mTimeRemaining;
+
     private bool chasing = false;
     public bool Chasing
     {
@@ -23,6 +26,7 @@ public class DemonController : MonoBehaviour {
             if (value && !chasing)
             {
                 chaseStartTime = Time.time;
+                mTimeRemaining = timer;
                 chasing = value;
             }
         }
@@ -47,26 +51,29 @@ public class DemonController : MonoBehaviour {
         }
         else
         {
+            mTimeRemaining -= Time.deltaTime;
+
+            // display countdown timer after three seconds from giving the go message
+            if (mTimeRemaining < (timer - 3))
+            {
+                GameObject.Find("hinttext").GetComponent<HintText>()
+                    .SetHint(mTimeRemaining.ToString("00.00"));
+            }
+
+            if (mTimeRemaining < 0)
+            {
+                // player has lost, reset everything
+                GameObject.Find("hinttext").GetComponent<HintText>()
+                    .SetHint("You outlasted the SPIRIT DEMON!");
+
+                Destroy(gameObject);
+            }
+
+
             // Chase the player
             transform.LookAt(player.transform);
             Vector3 moveDirection = transform.TransformDirection(Vector3.forward);
             controller.Move(moveDirection * speed * Time.deltaTime);
         }
 	}
-
-    void OnGUI()
-    {
-        if (Chasing)
-        {
-            GUILayout.BeginVertical();
-            GUILayout.FlexibleSpace();
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.Label("RUN FOR YOUR LIVES THE DEMON SPIRIT COMETH!!!");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.EndVertical();
-        }
-    }
 }

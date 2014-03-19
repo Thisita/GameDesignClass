@@ -92,7 +92,9 @@ public class PlayerCollisions : MonoBehaviour
 
         if (hit.collider.gameObject == GameObject.Find("DemonSphere"))
         {
+            var hints = GameObject.Find("hinttext").GetComponent<HintText>();
             GameObject.Find("DemonSphere").GetComponent<DemonController>().Chasing = true;
+            hints.SetHint("RUN FOR YOUR LIFE!!! THE DEMON SPIRIT HAS AWOKEN!!!");
         }
 		
 		if(hit.collider.gameObject == GameObject.Find("campfire"))
