@@ -89,6 +89,11 @@ public class PlayerCollisions : MonoBehaviour
 			var hints = GameObject.Find("hinttext").GetComponent<HintText>();
 			hints.SetHint("Hit the targets and win a battery!");
 		}
+
+        if (hit.collider.gameObject == GameObject.Find("DemonSphere"))
+        {
+            GameObject.Find("DemonSphere").GetComponent<DemonController>().Chasing = true;
+        }
 		
 		if(hit.collider.gameObject == GameObject.Find("campfire"))
 		{

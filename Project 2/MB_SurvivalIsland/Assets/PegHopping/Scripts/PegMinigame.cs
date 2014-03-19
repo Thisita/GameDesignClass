@@ -8,7 +8,7 @@ public class PegMinigame : MonoBehaviour {
 	public GameObject battery;
 	public AudioClip playSound;
 	
-	public float timer = 23.0f;
+	public float timer = 60.0f;
 	private float mTimeRemaining;
 	
 	private GameObject mBattery;
