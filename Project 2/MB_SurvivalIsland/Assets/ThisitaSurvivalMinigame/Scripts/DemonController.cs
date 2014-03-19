@@ -7,6 +7,9 @@ public class DemonController : MonoBehaviour {
     private CharacterController controller;
     public float speed;
     public float dieRange;
+    public float dieDelay;
+
+    private float chaseStartTime;
 
     private bool chasing = false;
     public bool Chasing
@@ -19,6 +22,7 @@ public class DemonController : MonoBehaviour {
         {
             if (value && !chasing)
             {
+                chaseStartTime = Time.time;
                 chasing = value;
             }
         }
@@ -34,11 +38,9 @@ public class DemonController : MonoBehaviour {
 	void Update () {
         if (player == null || !Chasing) return;
 
-        GameObject.Find("hinttext").GetComponent<HintText>().SetHint("RUN AWAY! THE DEMON SPIRIT HAS AWOKEN!");
-
         float range = Vector3.Distance(player.transform.position, transform.position);
 
-        if (range <= dieRange)
+        if (range <= dieRange && (Time.time - chaseStartTime) >= dieDelay)
         {
             // Player loses and is cursed
             Application.LoadLevel(Application.loadedLevel);
@@ -51,4 +53,20 @@ public class DemonController : MonoBehaviour {
             controller.Move(moveDirection * speed * Time.deltaTime);
         }
 	}
+
+    void OnGUI()
+    {
+        if (Chasing)
+        {
+            GUILayout.BeginVertical();
+            GUILayout.FlexibleSpace();
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("RUN FOR YOUR LIVES THE DEMON SPIRIT COMETH!!!");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.EndVertical();
+        }
+    }
 }
